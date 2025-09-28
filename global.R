@@ -8,10 +8,9 @@ library(tidyr)
 library(stringr)
 library(ggplot2)
 library(deeptime)
-library(tidyquant) ## if using geom_ma() for moving avg
+# library(tidyquant) ## if using geom_ma() for moving avg
+library(slider) # to calculate rolling average
 
-
-# default themes ----
 
 # define custom themes and scales ----
 theme_13C_age <- theme(

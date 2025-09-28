@@ -53,6 +53,12 @@ select_options_ui <- function(id) {
       # ),
       selected = age_models_list[1]
       # selected = "Model K"
+    ),
+    
+    checkboxInput(
+      inputId = ns("roll_mean"),
+      label = "Add ±25 point moving\naverage to each model?",
+      value = FALSE
     )
   )
 }
@@ -88,6 +94,10 @@ select_options_server <- function(id) {
         
         background_model = reactive({
           input$background_model
+        }),
+        
+        roll_mean = reactive({
+          input$roll_mean
         })
       )
     }

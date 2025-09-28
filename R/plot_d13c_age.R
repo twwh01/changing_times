@@ -17,16 +17,41 @@ plot_d13c_age_server <- function(
     id, 
     function(input, output, session) {
       
-      plot_data <- reactive({
-        indata %>%
+      data_selections <- reactive({
+        data_13c_plot %>%
           dplyr::filter(
             age_model %in% selections$age_models()
           )
       })
       
+      rolling_mean <- reactive({
+        selections$roll_mean()
+      })
+      
+      # add rolling mean if requested
+      plot_data <- reactive({
+        if(isTRUE(rolling_mean())){
+          data_selections() %>%
+            dplyr::group_by(age_model) %>%
+            dplyr::arrange(age_model, age_ma) %>%
+            dplyr::mutate(
+              data_roll = slider::slide_dbl(
+                .x = d13c_carb,
+                .f = mean,
+                .before = 25, # 25 points before
+                .after  = 25, # 25 points after
+                .complete = FALSE
+              )
+            ) %>%
+            dplyr::ungroup()
+        }else{
+          data_selections()
+        }
+      })
+
       # make background dataset for ggplot annotation
       background_dataset <- reactive({
-          indata %>% 
+        data_13c_plot %>% 
             dplyr::filter(
               age_model %in% selections$background_model()
             )
@@ -38,9 +63,36 @@ plot_d13c_age_server <- function(
       age_min_lim <- reactive({
         selections$age_min()
       })
+      
+      x_max_lim <- reactive({
+        plot_data() %>%
+          dplyr::filter(
+            age_ma >= age_min_lim() &
+              age_ma <= age_max_lim()
+          ) %>%
+          dplyr::pull(d13c_carb) %>%
+          max(., na.rm = TRUE)
+      })
+      x_min_lim <- reactive({
+        plot_data() %>%
+          dplyr::filter(
+            age_ma >= age_min_lim() &
+              age_ma <= age_max_lim()
+          ) %>%
+          dplyr::pull(d13c_carb) %>%
+          min(., na.rm = TRUE)
+      })
 
       output$plot <- renderPlot({
-        plot_d13c(plot_data(), background_dataset(), age_max_lim(), age_min_lim())
+        plot_d13c(
+          plot_data(), 
+          background_dataset(), 
+          age_max_lim(), 
+          age_min_lim(), 
+          x_max_lim(), 
+          x_min_lim(),
+          rolling_mean()
+        )
       })
     }
   )

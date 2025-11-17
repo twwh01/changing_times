@@ -17,42 +17,26 @@ select_options_ui <- function(id) {
       inputId = ns("age_models"),
       label = "Select which age model versions to show",
       choices = age_models_list,
-      #   c(
-      #   "Model K",
-      #   "Model J",
-      #   "Model I",
-      #   "Model H",
-      #   "Model G",
-      #   "Model F",
-      #   "Model E",
-      #   "Model D",
-      #   "Model C",
-      #   "Model B",
-      #   "Model A"
-      # ),
       selected = age_models_list[1]
-      # selected = "Model K"
     ),
     
     selectInput(
       inputId = ns("background_model"),
       label = "Plot a specific model\nas background (grey) points?",
       choices = age_models_list,
-      #   c(
-      #   "Model K",
-      #   "Model J",
-      #   "Model I",
-      #   "Model H",
-      #   "Model G",
-      #   "Model F",
-      #   "Model E",
-      #   "Model D",
-      #   "Model C",
-      #   "Model B",
-      #   "Model A"
-      # ),
       selected = age_models_list[1]
-      # selected = "Model K"
+    ),
+    
+    selectInput(
+      inputId = ns("point_colours"),
+      label = "Select which variable\nto use for point colour:", 
+      choices = c(
+        "none", 
+        "region", 
+        "all-model age volatility",
+        "selected model age volatility"
+      ),
+      selected = "none"
     ),
     
     checkboxInput(
@@ -94,6 +78,10 @@ select_options_server <- function(id) {
         
         background_model = reactive({
           input$background_model
+        }),
+        
+        point_colours = reactive({
+          input$point_colours
         }),
         
         roll_mean = reactive({

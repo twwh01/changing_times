@@ -28,8 +28,12 @@ plot_d13c_age_server <- function(
         selections$roll_mean()
       })
       
+      point_colour <- reactive({
+        selections$point_colours()
+      })
+      
       # add rolling mean if requested
-      plot_data <- reactive({
+      data_selected <- reactive({
         if(isTRUE(rolling_mean())){
           data_selections() %>%
             dplyr::group_by(age_model) %>%
@@ -46,6 +50,20 @@ plot_d13c_age_server <- function(
             dplyr::ungroup()
         }else{
           data_selections()
+        }
+      })
+      
+      # check for point colours
+      plot_data <- reactive({
+        if(point_colour() == "selected model age volatility") {
+          data_selected() %>%
+            dplyr::group_by(datum_id) %>%
+            dplyr::mutate(
+              selected_model_volatility = sd(age_ma, na.rm = TRUE)
+            )
+        } else {
+          # all other options are covered in the data already
+          data_selected()
         }
       })
 
@@ -91,7 +109,8 @@ plot_d13c_age_server <- function(
           age_min_lim(), 
           x_max_lim(), 
           x_min_lim(),
-          rolling_mean()
+          rolling_mean(), 
+          point_colour()
         )
       })
     }

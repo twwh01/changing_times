@@ -10,6 +10,7 @@ library(ggplot2)
 library(deeptime)
 # library(tidyquant) ## if using geom_ma() for moving avg
 library(slider) # to calculate rolling average
+library(scales) # for log-transforming colour scales
 
 
 # define custom themes and scales ----
@@ -37,6 +38,11 @@ indata_d13c <- indata %>%
     starts_with("Model"), 
     crude_lithofacies_association,
   ) %>%
+  # add data point index before making longform
+  dplyr::mutate(
+    datum_id = c(1:nrow(.)),
+    .before = region
+  ) %>%
   # dplyr::rename_with(
   #   ~ gsub("].*", "", .x),
   #   starts_with("[Model")
@@ -63,6 +69,11 @@ indata_d13c <- indata %>%
         )
       )
     )
+  ) %>%
+  # add volatility index using all data points
+  dplyr::rowwise() %>%
+  dplyr::mutate(
+    total_volatility = sd(dplyr::c_across(dplyr::starts_with("Model")), na.rm = TRUE)
   )
 
 data_13c_plot <- indata_d13c %>%

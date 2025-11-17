@@ -6,23 +6,32 @@ fluidPage(
     ),
   
   # theme = shinytheme("sandstone"),
-  theme = bs_theme(bootswatch = "minty"),
+  theme = bs_theme(bootswatch = "minty", version = 5),
   
   navbarPage(
     id = "ShinyStratigraphy",
     title = "Shiny Stratigraphy",
-
+    
     tabPanel(
       title = HTML(paste0("\u03B4", tags$sup("13"), "C stratigraphy")),
-        
+      
       sidebarLayout(
         sidebarPanel(
-          select_options_ui(id = "select_options")
+          wellPanel(
+            select_options_ui(id = "select_options")
+          ),
+          wellPanel(
+            download_plot_ui(id = "download_plot")
+          ),
+          width = 3
         ),
           
         mainPanel(
-          plot_d13c_age_ui(id = "plot_d13c_age")
-        )
+          plot_d13c_age_ui(id = "plot_d13c_age"),
+          width = 9
+        ),
+        
+        fluid = TRUE
       )
     ),
     

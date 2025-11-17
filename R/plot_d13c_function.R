@@ -57,7 +57,7 @@ plot_d13c <- function(
           scale_colour_viridis_c(
             trans = scales::pseudo_log_trans(sigma = 0.1, base = 10),
             breaks = c(0.1, 1, 10, 50),
-            name = "all-model\nage volatility", 
+            name = "all-model\nage volatility\n(standard deviation in Myr)", 
             option = "viridis"
           ), 
           guides(colour = guide_colourbar(position = "right")), 
@@ -76,7 +76,7 @@ plot_d13c <- function(
           scale_colour_viridis_c(
             trans = scales::pseudo_log_trans(sigma = 0.1, base = 10),
             breaks = c(0.1, 1, 10, 50),
-            name = "selected model\nage volatility", 
+            name = "all-model\nage volatility\n(standard deviation in Myr)", 
             option = "viridis"
           ), 
           guides(colour = guide_colourbar(position = "right")), 

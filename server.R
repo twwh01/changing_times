@@ -1,4 +1,4 @@
-# server script for ShinyStratigraphy
+# server script for Evolving Age Models
 function(input, output, session){
   selected_options <- select_options_server(
     id = "select_options"

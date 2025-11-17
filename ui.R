@@ -1,16 +1,16 @@
-# ui script for ShinyStratigraphy
+# ui script for Evolving Age Models
 fluidPage(
     tags$head(
       tags$meta(name = "description", content = "An interactive web-based app for comparing different age models of Ediacaran-Cambrian stratigraphy"),
-      tags$meta(name = "keywords", content = "ShinyStratigraphy, Cambrian, Ediacaran, Stratigraphy, Carbon isotopes, App")
+      tags$meta(name = "keywords", content = "Evolving Age Models, Cambrian, Ediacaran, Stratigraphy, Carbon isotopes, App")
     ),
   
   # theme = shinytheme("sandstone"),
   theme = bs_theme(bootswatch = "minty", version = 5),
   
   navbarPage(
-    id = "ShinyStratigraphy",
-    title = "Shiny Stratigraphy",
+    id = "EAM",
+    title = "Evolving Age Models",
     
     tabPanel(
       title = HTML(paste0("\u03B4", tags$sup("13"), "C stratigraphy")),

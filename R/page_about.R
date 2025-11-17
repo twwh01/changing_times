@@ -6,31 +6,31 @@ page_about_ui <- function(id) {
       align = "left"
     ),
     
-    h4("What is ", em("Shiny Stratigraphy"), "?"),
-    p(em("Shiny Stratigraphy"), " is an interactive web-based tool for visualising 
+    h4("What is ", em("Evolving Age Models"), "?"),
+    p(em("Evolving Age Models"), " is an interactive web-based tool for visualising 
       the differences between stratigraphic age models, in particular for the 
-      Ediacaran-Cambrian transition. ", em("Shiny Stratigraphy"), " is in early 
+      Ediacaran-Cambrian transition. ", em("Evolving Age Models"), " is in early 
       development at present and is subject to change substantially and without 
       warning until a first major version is released."),
     
-    h4("Why bother with ", em("Shiny Stratigraphy"), "?"),
+    h4("Why bother with ", em("Evolving Age Models"), "?"),
     p("When working with temporal data it is important to make sure you are measuring 
       datasets against the same standard. However, age models change over time as 
       new data and methods become available. Especially when working with deep time 
       data, age model uncertainties can be very large, and can significantly affect 
       dataset interpretations (e.g. Westerhold ", em("et al."), " 2024). ", 
-      em("Shiny Stratigraphy"), " is being developed to help compare successive 
+      em("Evolving Age Models"), " is being developed to help compare successive 
       iterations of age models in a visual and quantitative fashion, and to see 
       how the temporal stability of an age model has changed over time."),
     
-    h4("Who's behind", em("Shiny Stratigraphy"), "?"),
+    h4("Who's behind", em("Evolving Age Models"), "?"),
     p("Thomas Wong Hearing developed the Shiny app and R code. Fred Bowyer developed 
       the Ediacaran-Cambrian stratigraphic age models (see Bowyer ", em("et al."), 
       " 2023; 2024) on which this is based, including the carbon isotope stratigraphic 
       compilations."),
     
     h4("What's coming next?"),
-    p(em("Shiny Stratigraphy"), " is in early development. New features to be added 
+    p(em("Evolving Age Models"), " is in early development. New features to be added 
       include the option of uploading your own data, new variables to display and 
       compare, and more options to download the code used as well as the figures 
       produced.")

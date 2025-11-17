@@ -23,8 +23,8 @@ select_options_ui <- function(id) {
     selectInput(
       inputId = ns("background_model"),
       label = "Plot a specific model\nas background (grey) points?",
-      choices = age_models_list,
-      selected = age_models_list[1]
+      choices = age_models_background_list,
+      selected = age_models_background_list[1]
     ),
     
     selectInput(

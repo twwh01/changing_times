@@ -3,7 +3,7 @@ plot_d13c_age_ui <- function(id) {
   ns <- NS(id)
   tagList(
     # textOutput(outputId = ns("background")), 
-    plotOutput(outputId = ns("plot"), height = "600px")
+    plotOutput(outputId = ns("plot"), height = "700px")
   )
 }
 

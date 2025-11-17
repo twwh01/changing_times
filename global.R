@@ -96,4 +96,4 @@ data_13c_plot <- indata_d13c %>%
   )
 
 age_models_list <- data_13c_plot$age_model %>% unique() %>% sort(., decreasing = TRUE)
-age_models_background_list <- c("none", age_models)
+age_models_background_list <- c("none", age_models_list)

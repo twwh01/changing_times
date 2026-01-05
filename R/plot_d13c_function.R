@@ -60,7 +60,12 @@ plot_d13c <- function(
             name = "all-model\nage volatility\n(\u03B4 Myr)", 
             option = "viridis"
           ), 
-          guides(colour = guide_colourbar(position = "right")), 
+          guides(
+            colour = guide_colourbar(
+              theme = theme(legend.text = element_text(hjust = 1)),
+              position = "right"
+            )
+          ), 
           geom_point(
             data = plot_data, 
             aes(
@@ -79,7 +84,12 @@ plot_d13c <- function(
             name = "selected model\nage volatility\n(\u03B4 Myr)", 
             option = "viridis"
           ), 
-          guides(colour = guide_colourbar(position = "right")), 
+          guides(
+            colour = guide_colourbar(
+              theme = theme(legend.text = element_text(hjust = 1)),
+              position = "right"
+            )
+          ), 
           geom_point(
             data = plot_data,
             aes(

@@ -10,7 +10,7 @@ plot_d13c <- function(
   ) {
   ggplot() +
     theme_bw(base_size = 18) +
-    theme_13C_age +
+    theme_data_age +
     labs(
       x = expression(delta^13 * "C"[carb] * " (\u2030)"), # "d13C (permille)",
       y = "Age (Ma)"

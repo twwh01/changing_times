@@ -1,3 +1,6 @@
+# global script for the evolving_age_models work
+# author: TWWH
+
 # load packages ----
 library(shiny)
 library(shinythemes)
@@ -14,7 +17,7 @@ library(scales) # for log-transforming colour scales
 
 
 # define custom themes and scales ----
-theme_13C_age <- theme(
+theme_data_age <- theme(
   strip.background = element_rect(colour = "black", fill = "white"),
   legend.position = "bottom"
 )

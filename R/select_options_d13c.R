@@ -1,5 +1,5 @@
 # options panel for d13C data selection
-select_options_ui <- function(id) {
+select_options_d13c_ui <- function(id) {
   ns <- NS(id)
   
   tagList(
@@ -48,7 +48,7 @@ select_options_ui <- function(id) {
 }
 
 
-select_options_server <- function(id) {
+select_options_d13c_server <- function(id) {
   moduleServer(
     id,
     function(input, output, session) {

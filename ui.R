@@ -13,12 +13,12 @@ fluidPage(
     title = "Evolving Age Models",
     
     tabPanel(
-      title = HTML(paste0("\u03B4", tags$sup("13"), "C stratigraphy")),
+      title = HTML(paste0("Ediacaran-Cambrian \u03B4", tags$sup("13"), "C stratigraphy")),
       
       sidebarLayout(
         sidebarPanel(
           wellPanel(
-            select_options_ui(id = "select_options")
+            select_options_d13c_ui(id = "select_options_d13c")
           ),
           wellPanel(
             download_plot_ui(id = "download_plot")
@@ -28,6 +28,29 @@ fluidPage(
           
         mainPanel(
           plot_d13c_age_ui(id = "plot_d13c_age"),
+          width = 9
+        ),
+        
+        fluid = TRUE
+      )
+    ),
+    
+    tabPanel(
+      title = HTML(paste0("Miocene geomagnetic polarity timescale")),
+      
+      sidebarLayout(
+        sidebarPanel(
+          wellPanel(
+            select_options_gpts_ui(id = "select_options_gpts")
+          ),
+          wellPanel(
+            download_plot_ui(id = "download_plot")
+          ),
+          width = 3
+        ),
+        
+        mainPanel(
+          plot_gpts_age_ui(id = "plot_gpts_age"),
           width = 9
         ),
         

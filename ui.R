@@ -13,6 +13,11 @@ fluidPage(
     title = "Evolving Age Models",
     
     tabPanel(
+      title = "About",
+      page_about_ui(id = "About")
+    ),
+    
+    tabPanel(
       title = HTML(paste0("Ediacaran-Cambrian \u03B4", tags$sup("13"), "C stratigraphy")),
       
       sidebarLayout(
@@ -21,7 +26,7 @@ fluidPage(
             select_options_d13c_ui(id = "select_options_d13c")
           ),
           wellPanel(
-            download_plot_ui(id = "download_plot")
+            download_plot_ui(id = "download_plot_d13c")
           ),
           width = 3
         ),
@@ -44,7 +49,7 @@ fluidPage(
             select_options_gpts_ui(id = "select_options_gpts")
           ),
           wellPanel(
-            download_plot_ui(id = "download_plot")
+            download_plot_ui(id = "download_plot_gpts")
           ),
           width = 3
         ),
@@ -58,11 +63,6 @@ fluidPage(
       )
     ),
     
-    tabPanel(
-      title = "About",
-      page_about_ui(id = "About")
-    ),
-
     tabPanel(
       title = "References",
       page_refs_ui(id = "Refs")

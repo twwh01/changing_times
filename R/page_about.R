@@ -8,10 +8,16 @@ page_about_ui <- function(id) {
     
     h4("What is ", em("Evolving Age Models"), "?"),
     p(em("Evolving Age Models"), " is an interactive web-based tool for visualising 
-      the differences between stratigraphic age models, in particular for the 
-      Ediacaran-Cambrian transition. ", em("Evolving Age Models"), " is in early 
-      development at present and is subject to change substantially and without 
-      warning until a first major version is released."),
+      the differences between stratigraphic age models. 
+      I developed it initially to easily visualise the rapid change that age models 
+      for the Ediacaran-Cambrian transition has gone through in the last few years. ", 
+      em("Evolving Age Models"), " is in early development at present and is subject 
+      to change substantially and without warning until a first major version is released.
+      The app has two in-built datasets: one for Ediacaran-Cambrian carbon isotope 
+      chronostratigraphy developed by Fred Bowyer, and one for the Miocene geomagnetic 
+      polarity timescale. 
+      The app is designed to be flexible and adaptable to other datasets and age models, 
+      and I hope to add the option of uploading your own data in the future."),
     
     h4("Why bother with ", em("Evolving Age Models"), "?"),
     p("When working with temporal data it is important to make sure you are measuring 
@@ -27,13 +33,15 @@ page_about_ui <- function(id) {
     p("Thomas Wong Hearing developed the Shiny app and R code. Fred Bowyer developed 
       the Ediacaran-Cambrian stratigraphic age models (see Bowyer ", em("et al."), 
       " 2023; 2024) on which this is based, including the carbon isotope stratigraphic 
-      compilations."),
+      compilations. 
+      Anna Joy Drury provided the Miocene geomagnetic polarity timescale data and 
+      age models."),
     
     h4("What's coming next?"),
-    p(em("Evolving Age Models"), " is in early development. New features to be added 
-      include the option of uploading your own data, new variables to display and 
-      compare, and more options to download the code used as well as the figures 
-      produced.")
+    p(em("Evolving Age Models"), " is in early development. 
+      New features to be added include the option of uploading your own data, new 
+      variables to display and compare, and more options to download the code used 
+      as well as the figures produced.")
   )
 }
 

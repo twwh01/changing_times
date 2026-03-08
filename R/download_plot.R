@@ -67,7 +67,7 @@ download_plot_server <- function(id) {
       })
       
       output$download_plot_button <- downloadHandler(
-        filename = "d13C_age_plot.png",
+        filename = "age_model_plot.png",
         content = function(file) {
           ggsave(
             filename = file, 

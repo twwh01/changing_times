@@ -8,108 +8,69 @@ plot_d13c_age_ui <- function(id) {
 
 
 plot_d13c_age_server <- function(
-    id, 
-    indata, 
+    id,
+    indata,
     selections
   ) {
   moduleServer(
-    id, 
+    id,
     function(input, output, session) {
-      
-      data_selections <- reactive({
-        data_13c_plot %>%
-          dplyr::filter(
-            age_model %in% selections$age_models()
-          )
-      })
-      
-      rolling_mean <- reactive({
-        selections$roll_mean()
-      })
-      
-      point_colour <- reactive({
-        selections$point_colours()
-      })
-      
-      # add rolling mean if requested
+
       data_selected <- reactive({
-        if(isTRUE(rolling_mean())){
-          data_selections() %>%
+        data_13c_plot %>%
+          dplyr::filter(age_model %in% selections$age_models())
+      })
+
+      plot_data <- reactive({
+        d <- data_selected()
+
+        if (isTRUE(selections$roll_mean())) {
+          d <- d %>%
             dplyr::group_by(age_model) %>%
             dplyr::arrange(age_model, age_ma) %>%
             dplyr::mutate(
               data_roll = slider::slide_dbl(
-                .x = d13c_carb,
-                .f = mean,
-                .before = 25, # 25 points before
-                .after  = 25, # 25 points after
+                .x        = d13c_carb,
+                .f        = mean,
+                .before   = 25,
+                .after    = 25,
                 .complete = FALSE
               )
             ) %>%
             dplyr::ungroup()
-        }else{
-          data_selections()
         }
-      })
-      
-      # check for point colours
-      plot_data <- reactive({
-        if(point_colour() == "selected model age volatility") {
-          data_selected() %>%
+
+        if (selections$point_colours() == "selected model age volatility") {
+          d <- d %>%
             dplyr::group_by(datum_id) %>%
             dplyr::mutate(
-              selected_model_volatility = sd(age_ma, na.rm = TRUE)
-            )
-        } else {
-          # all other options are covered in the data already
-          data_selected()
+              selected_model_volatility = stats::sd(age_ma, na.rm = TRUE)
+            ) %>%
+            dplyr::ungroup()
         }
+
+        d
       })
 
-      # make background dataset for ggplot annotation
-      background_dataset <- reactive({
-        data_13c_plot %>% 
-            dplyr::filter(
-              age_model %in% selections$background_model()
-            )
-      })
-        
-      age_max_lim <- reactive({
-        selections$age_max()
-      })
-      age_min_lim <- reactive({
-        selections$age_min()
-      })
-      
-      x_max_lim <- reactive({
-        plot_data() %>%
-          dplyr::filter(
-            age_ma >= age_min_lim() &
-              age_ma <= age_max_lim()
-          ) %>%
-          dplyr::pull(d13c_carb) %>%
-          max(., na.rm = TRUE)
-      })
-      x_min_lim <- reactive({
-        plot_data() %>%
-          dplyr::filter(
-            age_ma >= age_min_lim() &
-              age_ma <= age_max_lim()
-          ) %>%
-          dplyr::pull(d13c_carb) %>%
-          min(., na.rm = TRUE)
+      background_data <- reactive({
+        bg <- selections$background_model()
+        if (is.null(bg) || isTRUE(bg == "none")) {
+          return(NULL)
+        }
+        data_13c_plot %>%
+          dplyr::filter(age_model %in% bg)
       })
 
       output$plot <- renderPlot({
-        plot_d13c(
-          plot_data(), 
-          background_dataset(), 
-          age_max_lim(), 
-          age_min_lim(), 
-          x_max_lim(), 
-          x_min_lim(),
-          rolling_mean(), 
-          point_colour()
+        plot_isotope_upload(
+          plot_data       = plot_data(),
+          background_data = background_data(),
+          value_col       = "d13c_carb",
+          age_max_lim     = selections$age_max(),
+          age_min_lim     = selections$age_min(),
+          point_colour    = selections$point_colours(),
+          rolling_mean    = isTRUE(selections$roll_mean()),
+          x_label         = expression(delta^13 * "C"[carb] * " (\u2030)")
         )
       })
     }

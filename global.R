@@ -114,15 +114,3 @@ data_gpts_plot <- prepare_magnetostrat_data(
   )
 
 gpts_age_models_list <- data_gpts_plot$age_model %>% unique() %>% sort(., decreasing = TRUE)
-
-magnetochron_labels <- data_gpts_plot %>%
-  dplyr::select(
-    age_model_label, 
-    Magnetochron,
-    age_ma_base,
-    age_ma_mid,
-    total_volatility_base
-  ) %>%
-  dplyr::filter(
-    as.integer(age_model_label) == max(as.integer(age_model_label))
-  )

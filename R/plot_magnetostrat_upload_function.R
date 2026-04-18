@@ -11,6 +11,11 @@ plot_magnetostrat_upload <- function(
   ) {
   bar_half_width <- 0.2
 
+  # Drop unused age-model levels so the x-axis and label panel only reflect
+  # what is actually present in `plot_data`.
+  plot_data <- plot_data %>%
+    dplyr::mutate(age_model_label = forcats::fct_drop(age_model_label))
+
   model_levels <- levels(plot_data$age_model_label)
   plot_data <- plot_data %>%
     dplyr::mutate(x_num = as.integer(age_model_label))

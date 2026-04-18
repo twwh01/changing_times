@@ -30,6 +30,19 @@ function(input, output, session){
   
   page_about_server(id = "About")
 
+  selected_options_upload <- select_options_upload_server(
+    id = "select_options_upload"
+  )
+
+  plot_upload_age_server(
+    id = "plot_upload_age",
+    selections = selected_options_upload
+  )
+
+  download_plot_upload <- download_plot_server(
+    id = "download_plot_upload"
+  )
+
   page_refs_server(id = "Refs")
   
 }

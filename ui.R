@@ -64,6 +64,29 @@ fluidPage(
     ),
     
     tabPanel(
+      title = "Upload your own data",
+
+      sidebarLayout(
+        sidebarPanel(
+          wellPanel(
+            select_options_upload_ui(id = "select_options_upload")
+          ),
+          wellPanel(
+            download_plot_ui(id = "download_plot_upload")
+          ),
+          width = 3
+        ),
+
+        mainPanel(
+          plot_upload_age_ui(id = "plot_upload_age"),
+          width = 9
+        ),
+
+        fluid = TRUE
+      )
+    ),
+
+    tabPanel(
       title = "References",
       page_refs_ui(id = "Refs")
     )

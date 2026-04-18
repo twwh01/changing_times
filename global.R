@@ -13,7 +13,6 @@ library(forcats)
 library(ggplot2)
 library(deeptime)
 library(patchwork)
-# library(tidyquant) ## if using geom_ma() for moving avg
 library(slider) # to calculate rolling average
 library(scales) # for log-transforming colour scales
 
@@ -48,14 +47,6 @@ indata_d13c <- indata %>%
     datum_id = c(1:nrow(.)),
     .before = region
   ) %>%
-  # dplyr::rename_with(
-  #   ~ gsub("].*", "", .x),
-  #   starts_with("[Model")
-  # ) %>%
-  # dplyr::rename_with(
-  #   ~ gsub("\\[", "", .x),
-  #   starts_with("[Model")
-  # ) %>%
   dplyr::mutate(
     region = ifelse(
       str_detect(region, "^Morocco"), 
@@ -117,9 +108,8 @@ indata <- openxlsx2::wb_to_df(
 
 indata_gpts <- indata %>%
   dplyr::select(
-    Magnetochron_base, 
+    Magnetochron_base,
     Magnetochron_top,
-    # Reversal,
     starts_with("Model")
   ) %>%
   # add data point index before making longform

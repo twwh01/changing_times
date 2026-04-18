@@ -94,64 +94,13 @@ plot_upload_age_server <- function(id, selections) {
 
       magnetostrat_data <- reactive({
         req(selections$raw_data(), selections$model_cols(), selections$age_models())
-        df <- selections$raw_data()
         req(selections$has_magnetostrat_cols())
-        m_cols   <- selections$model_cols()
-        selected <- selections$age_models()
 
-        indata_g <- df %>%
-          dplyr::select(
-            Magnetochron_base,
-            Magnetochron_top,
-            dplyr::all_of(m_cols)
+        d <- prepare_magnetostrat_data(
+            df = selections$raw_data(),
+            model_cols = selections$model_cols()
           ) %>%
-          dplyr::mutate(
-            datum_id = seq_len(dplyr::n()),
-            .before  = 1
-          ) %>%
-          dplyr::rowwise() %>%
-          dplyr::mutate(
-            total_volatility = stats::sd(
-              dplyr::c_across(dplyr::all_of(m_cols)),
-              na.rm = TRUE
-            )
-          ) %>%
-          dplyr::ungroup()
-
-        d <- indata_g %>%
-          tidyr::pivot_longer(
-            cols         = c(Magnetochron_base, Magnetochron_top),
-            names_to     = "position",
-            names_prefix = "Magnetochron_",
-            values_to    = "Magnetochron"
-          ) %>%
-          tidyr::pivot_longer(
-            cols      = dplyr::all_of(m_cols),
-            names_to  = "age_model",
-            values_to = "age_ma"
-          ) %>%
-          dplyr::mutate(
-            age_ma          = as.numeric(age_ma),
-            age_model_label = forcats::fct_inorder(age_model)
-          ) %>%
-          dplyr::filter(
-            !is.na(age_ma),
-            age_model %in% selected
-          ) %>%
-          tidyr::pivot_wider(
-            names_from  = position,
-            values_from = c(datum_id, age_ma, total_volatility),
-            names_glue  = "{.value}_{position}"
-          ) %>%
-          dplyr::mutate(
-            age_ma_mid = (age_ma_base + age_ma_top) / 2,
-            polarity = dplyr::case_when(
-              grepl("r$", gsub("\\s\\([^)]*\\)", "", Magnetochron)) ~ "r",
-              grepl("n$", gsub("\\s\\([^)]*\\)", "", Magnetochron)) ~ "n",
-              .default = NA_character_
-            ),
-            .after = Magnetochron
-          )
+          dplyr::filter(age_model %in% selections$age_models())
 
         if (isTRUE(selections$volatility_colours() == "selected model age volatility")) {
           d <- d %>%

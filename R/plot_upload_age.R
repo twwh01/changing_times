@@ -150,7 +150,8 @@ plot_upload_age_server <- function(id, selections) {
               plot_data          = magnetostrat_data(),
               age_max_lim        = age_max,
               age_min_lim        = age_min,
-              volatility_colours = vc
+              volatility_colours = vc,
+              show_labels        = isTRUE(selections$show_magnetostrat_labels())
             )
           } else {
             plot_isochron_upload(

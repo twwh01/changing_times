@@ -189,6 +189,11 @@ select_options_upload_server <- function(id) {
                     "(black 'n' / white 'r' polarity bars)?"
                   ),
                   value   = FALSE
+                ),
+                checkboxInput(
+                  inputId = ns("show_magnetostrat_labels"),
+                  label   = "Show magnetochron labels on the side?",
+                  value   = FALSE
                 )
               )
             )
@@ -209,8 +214,9 @@ select_options_upload_server <- function(id) {
         point_colours         = reactive(input$point_colours),
         roll_mean             = reactive(input$roll_mean),
         roll_window           = reactive(input$roll_window),
-        volatility_colours    = reactive(input$volatility_colours),
-        magnetostrat          = reactive(input$magnetostrat)
+        volatility_colours       = reactive(input$volatility_colours),
+        magnetostrat             = reactive(input$magnetostrat),
+        show_magnetostrat_labels = reactive(input$show_magnetostrat_labels)
       )
     }
   )

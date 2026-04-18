@@ -1,9 +1,13 @@
 # Magnetostratigraphy-style plot for uploaded data (mirrors plot_gpts bars).
+# When `show_labels = TRUE`, a text side-panel with Magnetochron labels is
+# added using patchwork — the labels are taken from the last age-model level
+# in `plot_data`.
 plot_magnetostrat_upload <- function(
     plot_data,
     age_max_lim,
     age_min_lim,
-    volatility_colours
+    volatility_colours,
+    show_labels = FALSE
   ) {
   bar_half_width <- 0.2
 
@@ -115,7 +119,7 @@ plot_magnetostrat_upload <- function(
     )
   }
 
-  p +
+  p <- p +
     line_layer +
     geom_rect(
       aes(
@@ -126,4 +130,75 @@ plot_magnetostrat_upload <- function(
       ),
       colour = "black"
     )
+
+  if (!isTRUE(show_labels)) {
+    return(p)
+  }
+
+  # Build label side-panel from the last age-model level in the data.
+  label_level <- tail(levels(plot_data$age_model_label), 1)
+  labels_data <- plot_data %>%
+    dplyr::filter(age_model_label == label_level) %>%
+    dplyr::select(
+      Magnetochron,
+      age_ma_mid,
+      dplyr::any_of(c("total_volatility_base", "selected_model_volatility_base"))
+    ) %>%
+    dplyr::distinct()
+
+  p2 <- ggplot(data = labels_data) +
+    theme_void(base_size = 18) +
+    theme_data_age +
+    labs(x = NULL, y = "Age (Ma)") +
+    scale_y_reverse(limits = c(age_max_lim, age_min_lim)) +
+    deeptime::coord_geo(pos = "right", dat = "stages")
+
+  p2 <- p2 + if (volatility_colours == "none") {
+    geom_text(
+      aes(label = Magnetochron, x = 1, y = age_ma_mid),
+      hjust = 0
+    )
+  } else if (volatility_colours == "all-model age volatility") {
+    list(
+      geom_text(
+        aes(
+          label  = Magnetochron,
+          x      = 1,
+          y      = age_ma_mid,
+          colour = total_volatility_base
+        ),
+        hjust = 0
+      ),
+      scale_colour_viridis_c(
+        trans  = scales::pseudo_log_trans(sigma = 0.1, base = 10),
+        breaks = c(0.1, 1, 10, 50),
+        option = "viridis",
+        guide  = "none"
+      )
+    )
+  } else if (volatility_colours == "selected model age volatility") {
+    list(
+      geom_text(
+        aes(
+          label  = Magnetochron,
+          x      = 1,
+          y      = age_ma_mid,
+          colour = selected_model_volatility_base
+        ),
+        hjust = 0
+      ),
+      scale_colour_viridis_c(
+        trans  = scales::pseudo_log_trans(sigma = 0.1, base = 10),
+        breaks = c(0.1, 1, 10, 50),
+        option = "viridis",
+        guide  = "none"
+      )
+    )
+  }
+
+  ((p + patchwork::plot_spacer() + p2) +
+    patchwork::plot_layout(
+      guides = "collect",
+      widths = c(5, -1.1, 2)
+    )) & theme(legend.position = "right")
 }

@@ -6,7 +6,8 @@ plot_isotope_upload <- function(
     age_max_lim,
     age_min_lim,
     point_colour,
-    rolling_mean = FALSE
+    rolling_mean = FALSE,
+    x_label = NULL
   ) {
   validate(
     need(
@@ -39,7 +40,7 @@ plot_isotope_upload <- function(
     theme_bw(base_size = 18) +
     theme_data_age +
     labs(
-      x = value_col,
+      x = if (is.null(x_label)) value_col else x_label,
       y = "Age (Ma)"
     ) +
     scale_x_continuous(limits = c(x_min - x_pad, x_max + x_pad)) +
@@ -91,6 +92,12 @@ plot_isotope_upload <- function(
           )
         ),
         geom_point(aes(colour = selected_model_volatility), shape = 21)
+      )
+    } else if (point_colour %in% names(plot_data)) {
+      # Any other string that matches a column name: treat as categorical colouring.
+      list(
+        scale_colour_viridis_d(name = point_colour, option = "turbo"),
+        geom_point(aes(colour = .data[[point_colour]]), shape = 21)
       )
     }
   }

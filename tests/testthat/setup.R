@@ -27,3 +27,11 @@ assign(
   ),
   envir = globalenv()
 )
+
+# `plot_d13c_age_server` and `plot_gpts_age_server` read `data_13c_plot` and
+# `data_gpts_plot` from globalenv (built by global.R). For tests we stand in
+# synth fixtures — same shape, no file I/O — under a fixed seed so the
+# values are stable across runs.
+set.seed(42)
+assign("data_13c_plot", synth_d13c_plot(), envir = globalenv())
+assign("data_gpts_plot", synth_gpts_plot(), envir = globalenv())

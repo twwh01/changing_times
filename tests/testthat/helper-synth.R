@@ -43,3 +43,92 @@ synth_magnetostrat_wide <- function(n_boundaries = 6, n_models = 3) {
   }
   df
 }
+
+# Minimal raw-table fixture for `plot_upload_age_server`: two model columns
+# and one numeric value column. Mirrors the shape the user uploads via the
+# Shiny app's file picker.
+synth_upload_raw <- function(n_rows = 12) {
+  data.frame(
+    Model_A = stats::runif(n_rows, 5, 20),
+    Model_B = stats::runif(n_rows, 5, 20),
+    value   = stats::rnorm(n_rows),
+    stringsAsFactors = FALSE
+  )
+}
+
+# Builds the `selections` list `plot_upload_age_server` expects — a named
+# list of zero-arg functions, one per upstream widget reactive. Defaults give
+# a happy-path isotope render; pass overrides via `...`, e.g.
+#   make_upload_selections(roll_mean = function() TRUE)
+make_upload_selections <- function(...) {
+  raw <- synth_upload_raw()
+  defaults <- list(
+    raw_data                 = function() raw,
+    model_cols               = function() c("Model_A", "Model_B"),
+    value_col                = function() "value",
+    age_models               = function() c("Model_A", "Model_B"),
+    plot_type                = function() "isotope",
+    point_colours            = function() "none",
+    volatility_colours       = function() "none",
+    roll_mean                = function() FALSE,
+    roll_window              = function() 5,
+    background_model         = function() "none",
+    selected_age             = function() c(0, 50),
+    has_magnetostrat_cols    = function() FALSE,
+    magnetostrat             = function() FALSE,
+    show_magnetostrat_labels = function() FALSE
+  )
+  utils::modifyList(defaults, list(...))
+}
+
+# Long-form d13C fixture matching the shape of `data_13c_plot` built in
+# global.R — only the columns `plot_d13c_age_server` reads.
+synth_d13c_plot <- function(n_points = 20, n_models = 2) {
+  d <- synth_isotope_data(n_points, n_models)
+  d$d13c_carb <- d$value
+  d$value     <- NULL
+  d
+}
+
+# Prepared-magnetostrat fixture matching the shape of `data_gpts_plot`.
+# Mirrors the extra age_model_year / age_model_label reordering that
+# global.R applies on top of prepare_magnetostrat_data().
+synth_gpts_plot <- function(n_boundaries = 6, n_models = 3) {
+  wide <- synth_magnetostrat_wide(n_boundaries, n_models)
+  m_cols <- grep("^Model_", names(wide), value = TRUE)
+  prepare_magnetostrat_data(
+    df                 = wide,
+    model_cols         = m_cols,
+    model_names_prefix = "Model_"
+  ) %>%
+    dplyr::mutate(
+      age_model_year  = as.numeric(gsub("[A-Za-z]", "", age_model)),
+      age_model_label = forcats::fct_reorder(age_model, age_model_year)
+    )
+}
+
+# Selections contract for `plot_d13c_age_server`. Defaults reference the
+# `data_13c_plot` global (injected in setup.R) so `age_models` matches what
+# the module will see.
+make_d13c_selections <- function(...) {
+  defaults <- list(
+    age_models       = function() unique(data_13c_plot$age_model),
+    roll_mean        = function() FALSE,
+    point_colours    = function() "none",
+    background_model = function() "none",
+    age_max          = function() 650,
+    age_min          = function() 450
+  )
+  utils::modifyList(defaults, list(...))
+}
+
+# Selections contract for `plot_gpts_age_server`.
+make_gpts_selections <- function(...) {
+  defaults <- list(
+    age_models         = function() unique(data_gpts_plot$age_model),
+    volatility_colours = function() "none",
+    age_max            = function() 25,
+    age_min            = function() 0
+  )
+  utils::modifyList(defaults, list(...))
+}

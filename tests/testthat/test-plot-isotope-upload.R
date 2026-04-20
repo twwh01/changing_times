@@ -9,6 +9,7 @@ test_that("plot_isotope_upload renders with no point colouring", {
     point_colour = "none"
   )
   expect_s3_class(p, "ggplot")
+  expect_builds(p)
 })
 
 test_that("plot_isotope_upload renders with all-model age volatility colouring", {
@@ -22,6 +23,7 @@ test_that("plot_isotope_upload renders with all-model age volatility colouring",
     point_colour = "all-model age volatility"
   )
   expect_s3_class(p, "ggplot")
+  expect_builds(p)
 })
 
 test_that("plot_isotope_upload renders with selected-model age volatility colouring", {
@@ -35,6 +37,7 @@ test_that("plot_isotope_upload renders with selected-model age volatility colour
     point_colour = "selected model age volatility"
   )
   expect_s3_class(p, "ggplot")
+  expect_builds(p)
 })
 
 test_that("plot_isotope_upload renders with a categorical column for point colour", {
@@ -49,6 +52,7 @@ test_that("plot_isotope_upload renders with a categorical column for point colou
     point_colour = "category"
   )
   expect_s3_class(p, "ggplot")
+  expect_builds(p)
 })
 
 test_that("plot_isotope_upload renders with rolling mean overlay", {
@@ -69,6 +73,7 @@ test_that("plot_isotope_upload renders with rolling mean overlay", {
     rolling_mean = TRUE
   )
   expect_s3_class(p, "ggplot")
+  expect_builds(p)
 })
 
 test_that("plot_isotope_upload renders with background data overlay", {
@@ -84,4 +89,5 @@ test_that("plot_isotope_upload renders with background data overlay", {
     point_colour    = "none"
   )
   expect_s3_class(p, "ggplot")
+  expect_builds(p)
 })

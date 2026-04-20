@@ -29,6 +29,7 @@ test_that("plot_magnetostrat_upload renders without volatility colouring or labe
     volatility_colours = "none"
   )
   expect_s3_class(p, "ggplot")
+  expect_builds(p)
 })
 
 test_that("plot_magnetostrat_upload renders with all-model volatility colouring", {
@@ -41,6 +42,7 @@ test_that("plot_magnetostrat_upload renders with all-model volatility colouring"
     volatility_colours = "all-model age volatility"
   )
   expect_s3_class(p, "ggplot")
+  expect_builds(p)
 })
 
 test_that("plot_magnetostrat_upload renders with selected-model volatility colouring", {
@@ -56,6 +58,7 @@ test_that("plot_magnetostrat_upload renders with selected-model volatility colou
     volatility_colours = "selected model age volatility"
   )
   expect_s3_class(p, "ggplot")
+  expect_builds(p)
 })
 
 test_that("plot_magnetostrat_upload returns a patchwork composition when show_labels = TRUE", {
@@ -69,4 +72,11 @@ test_that("plot_magnetostrat_upload returns a patchwork composition when show_la
     show_labels        = TRUE
   )
   expect_s3_class(p, "patchwork")
+  # Boundary chrons (the youngest and oldest in the synth) have NA on one
+  # age edge, so `age_ma_mid` is NA and `geom_text` drops them with this
+  # warning. Real magnetostrat data has the same shape at its boundaries.
+  expect_warning(
+    expect_builds(p),
+    "Removed .* rows containing missing values"
+  )
 })

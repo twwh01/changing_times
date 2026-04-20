@@ -9,6 +9,7 @@ test_that("plot_isochron_upload renders with no value column", {
     volatility_colours = "none"
   )
   expect_s3_class(p, "ggplot")
+  expect_builds(p)
 })
 
 test_that("plot_isochron_upload renders with a numeric value column and all-model volatility", {
@@ -22,6 +23,7 @@ test_that("plot_isochron_upload renders with a numeric value column and all-mode
     volatility_colours = "all-model age volatility"
   )
   expect_s3_class(p, "ggplot")
+  expect_builds(p)
 })
 
 test_that("plot_isochron_upload renders with a categorical value column", {
@@ -36,4 +38,5 @@ test_that("plot_isochron_upload renders with a categorical value column", {
     volatility_colours = "selected model age volatility"
   )
   expect_s3_class(p, "ggplot")
+  expect_builds(p)
 })

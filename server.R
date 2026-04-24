@@ -43,6 +43,4 @@ function(input, output, session){
     id = "download_plot_upload"
   )
 
-  page_refs_server(id = "Refs")
-  
 }

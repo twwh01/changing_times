@@ -84,11 +84,6 @@ fluidPage(
 
         fluid = TRUE
       )
-    ),
-
-    tabPanel(
-      title = "References",
-      page_refs_ui(id = "Refs")
     )
   )
 )

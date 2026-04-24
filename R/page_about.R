@@ -7,41 +7,67 @@ page_about_ui <- function(id) {
     ),
     
     h4("What is ", em("Evolving Age Models"), "?"),
-    p(em("Evolving Age Models"), " is an interactive web-based tool for visualising 
-      the differences between stratigraphic age models. 
-      I developed it initially to easily visualise the rapid change that age models 
-      for the Ediacaran-Cambrian transition has gone through in the last few years. ", 
-      em("Evolving Age Models"), " is in early development at present and is subject 
-      to change substantially and without warning until a first major version is released.
-      The app has two in-built datasets: one for Ediacaran-Cambrian carbon isotope 
-      chronostratigraphy developed by Fred Bowyer, and one for the Miocene geomagnetic 
-      polarity timescale. 
-      The app is designed to be flexible and adaptable to other datasets and age models, 
-      and I hope to add the option of uploading your own data in the future."),
+    p(em("Evolving Age Models"), " is an interactive tool for understanding, quantifying, and visualising the 
+      differences between stratigraphic age models. 
+      I initially developed this tool to provide an intuitive way of seeing how age models for the Ediacaran-Cambrian 
+      transition (~580 to 510 million years ago) have changed in recent years. 
+      This beta release of ", em("Evolving Age Models"), " is still in development and may change without notice until 
+      a first major version is released. ")
+    p(em("Evolving Age Models"), " has two built-in datasets: one for Ediacaran-Cambrian carbon isotope chronostratigraphy 
+      developed by Fred Bowyer, and one for the Miocene geomagnetic polarity timescale provided by Anna Joy Drury. 
+      The app is designed to be flexible and adaptable to other types of data and age models. 
+      If you find that your data do not work in the way you expect, please ", 
+      tags$a("contact me", href = "mailto:twonghearing@gmail.com"), "."),
     
-    h4("Why bother with ", em("Evolving Age Models"), "?"),
-    p("When working with temporal data it is important to make sure you are measuring 
-      datasets against the same standard. However, age models change over time as 
-      new data and methods become available. Especially when working with deep time 
-      data, age model uncertainties can be very large, and can significantly affect 
-      dataset interpretations (e.g. Westerhold ", em("et al."), " 2024). ", 
-      em("Evolving Age Models"), " is being developed to help compare successive 
-      iterations of age models in a visual and quantitative fashion, and to see 
-      how the temporal stability of an age model has changed over time."),
+    h4("How can ", em("Evolving Age Models"), " help me?"),
+    p("When working with temporal data it is important to make sure you are measuring datasets in the same temporal reference frame. 
+      However, age models change over time as new data and methods become available. 
+      Both acknowledged and unknown uncertainties associated with age models can be large, especially when working 
+      with deep time data, and can significantly affect dataset interpretations (e.g. Westerhold ", em("et al."), " 2024). ",
+      em("Evolving Age Models"), " helps to visualise and quantify the changes between different age model iterations, showing which 
+      time intervals have been most affected from one version to another. 
+      Overall, this can help show how stable age models are, and which time intervals may be subject to reinterpretation as 
+      chronostratigraphic methods and frameworks develop."),
     
     h4("Who's behind", em("Evolving Age Models"), "?"),
-    p("Thomas Wong Hearing developed the Shiny app and R code. Fred Bowyer developed 
-      the Ediacaran-Cambrian stratigraphic age models (see Bowyer ", em("et al."), 
-      " 2023; 2024) on which this is based, including the carbon isotope stratigraphic 
-      compilations. 
-      Anna Joy Drury provided the Miocene geomagnetic polarity timescale data and 
-      age models."),
+    p(tags$a("Thomas Wong Hearing", href = "https://twwh01.github.io", target = "_blank", rel = "noopener noreferrer"), 
+      " developed the Shiny app and R code. Claude Code was used to refactor and write tests for the app. 
+      Fred Bowyer developed the Ediacaran-Cambrian stratigraphic age models (see Bowyer ", em("et al."), " 2023; 2024). 
+      Anna Joy Drury provided the Miocene geomagnetic polarity timescale data and age models."),
     
     h4("What's coming next?"),
-    p(em("Evolving Age Models"), " is in early development. 
-      New features to be added include the option of uploading your own data, new 
-      variables to display and compare, and more options to download the code used 
-      as well as the figures produced.")
+    p(em("Evolving Age Models"), " is still in development and this should be regarded as a beta release.
+      Please ", tags$a("contact me", href = "mailto:twonghearing@gmail.com"), " if there are specific features you'd like to see.
+      I am planning to include an option for saving out tables of datapoint/event age volatility, as well as options to download
+      the code used for specific calculations and plot rendering. "),
+
+    h4("References"),
+    tags$ul(
+
+      tags$li(
+        "Bowyer, F.T., Uahengo, C.-I., et al. 2023.
+        Constraining the onset and environmental setting of metazoan biomineralization: The Ediacaran Nama Group of the Tsaus Mountains, Namibia.
+        Earth and Planetary Science Letters, 620, 118336, ",
+        tags$a(href = "https://doi.org/10.1016/j.epsl.2023.118336", target = "_blank", "https://doi.org/10.1016/j.epsl.2023.118336"),
+        "."
+      ),
+
+      tags$li(
+        "Bowyer, F.T., Wood, R.A. and Yilales, M. 2024.
+        Sea level controls on Ediacaran-Cambrian animal radiations.
+        Science Advances, 10, eado6462, ",
+        tags$a(href = "https://doi.org/10.1126/sciadv.ado6462", target = "_blank", "https://doi.org/10.1126/sciadv.ado6462"),
+        "."
+      ),
+
+      tags$li(
+        "Westerhold, T., Agnini, C., et al. 2024.
+        Timing Is Everything.
+        Paleoceanography and Paleoclimatology, 39, e2024PA004932, ",
+        tags$a(href = "https://doi.org/10.1029/2024PA004932", target = "_blank", "https://doi.org/10.1029/2024PA004932"),
+        "."
+      )
+    )
   )
 }
 

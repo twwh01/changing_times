@@ -1,4 +1,4 @@
-# global script for the evolving_age_models work
+# global script for the changing_times work
 # author: TWWH
 
 # load packages ----

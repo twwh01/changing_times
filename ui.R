@@ -1,16 +1,16 @@
-# ui script for Evolving Age Models
+# ui script for Changing Times
 fluidPage(
     tags$head(
       tags$meta(name = "description", content = "An interactive web-based app for comparing different age models of Ediacaran-Cambrian stratigraphy"),
-      tags$meta(name = "keywords", content = "Evolving Age Models, Cambrian, Ediacaran, Stratigraphy, Carbon isotopes, App")
+      tags$meta(name = "keywords", content = "Changing Times, Cambrian, Ediacaran, Stratigraphy, Carbon isotopes, App")
     ),
-  
+
   # theme = shinytheme("sandstone"),
   theme = bs_theme(bootswatch = "minty", version = 5),
-  
+
   navbarPage(
-    id = "EAM",
-    title = "Evolving Age Models",
+    id = "CT",
+    title = "Changing Times",
     
     tabPanel(
       title = "About",

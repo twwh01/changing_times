@@ -76,7 +76,10 @@ make_upload_selections <- function(...) {
     selected_age             = function() c(0, 50),
     has_magnetostrat_cols    = function() FALSE,
     magnetostrat             = function() FALSE,
-    show_magnetostrat_labels = function() FALSE
+    show_magnetostrat_labels = function() FALSE,
+    model_x                  = function() "Model_A",
+    model_y                  = function() "Model_B",
+    crossplot_colour         = function() "value"
   )
   utils::modifyList(defaults, list(...))
 }
@@ -118,6 +121,45 @@ make_d13c_selections <- function(...) {
     background_model = function() "none",
     age_max          = function() 650,
     age_min          = function() 450
+  )
+  utils::modifyList(defaults, list(...))
+}
+
+# Wide-form d13C fixture matching the shape of `indata_d13c` built in
+# global.R — one row per datum, with one column per age model. Mirrors the
+# fact that the source xlsx stores `d13c_carb` as character (some non-numeric
+# values get coerced to NA) so the cross-plot module can be exercised against
+# the same input shape.
+synth_d13c_wide <- function(n_points = 12, n_models = 3) {
+  models <- paste0("Model_", LETTERS[seq_len(n_models)])
+  d <- data.frame(
+    datum_id                      = seq_len(n_points),
+    region                        = sample(c("Namibia", "Oman", "Morocco"),
+                                           n_points, replace = TRUE),
+    d13c_carb                     = as.character(round(stats::rnorm(n_points), 3)),
+    crude_lithofacies_association = sample(c("inner", "outer"),
+                                           n_points, replace = TRUE),
+    stringsAsFactors              = FALSE
+  )
+  for (m in models) {
+    d[[m]] <- stats::runif(n_points, 500, 600)
+  }
+  if (n_points >= 2) {
+    d[[models[1]]][1:2] <- NA
+  }
+  d$total_volatility <- stats::runif(n_points, 0.1, 5)
+  d
+}
+
+# Selections contract for `plot_d13c_crossplot_server`. Defaults assume the
+# `synth_d13c_wide()` fixture (Model_A / Model_B columns, ages in 500–600 Ma).
+make_d13c_crossplot_selections <- function(...) {
+  defaults <- list(
+    model_x    = function() "Model_A",
+    model_y    = function() "Model_B",
+    colour_var = function() "d13c_carb",
+    age_min    = function() 500,
+    age_max    = function() 600
   )
   utils::modifyList(defaults, list(...))
 }

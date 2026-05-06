@@ -126,8 +126,66 @@ plot_upload_age_server <- function(id, selections) {
           dplyr::filter(age_model == bg)
       })
 
+      crossplot_data <- reactive({
+        req(
+          selections$raw_data(),
+          selections$model_x(),
+          selections$model_y(),
+          selections$selected_age()
+        )
+        x <- selections$model_x()
+        y <- selections$model_y()
+        m_cols <- selections$model_cols()
+        validate(
+          need(x %in% m_cols, paste0("Model column '", x, "' not found.")),
+          need(y %in% m_cols, paste0("Model column '", y, "' not found."))
+        )
+
+        d <- selections$raw_data()
+        d[[x]] <- suppressWarnings(as.numeric(d[[x]]))
+        d[[y]] <- suppressWarnings(as.numeric(d[[y]]))
+
+        cv <- selections$crossplot_colour()
+        if (!is.null(cv) && cv != "none" && cv %in% names(d) && !is.numeric(d[[cv]])) {
+          coerced <- suppressWarnings(as.numeric(d[[cv]]))
+          if (any(!is.na(coerced))) d[[cv]] <- coerced
+        }
+
+        age_min <- min(selections$selected_age())
+        age_max <- max(selections$selected_age())
+
+        d %>%
+          dplyr::filter(
+            !is.na(.data[[x]]),
+            !is.na(.data[[y]]),
+            .data[[x]] >= age_min, .data[[x]] <= age_max,
+            .data[[y]] >= age_min, .data[[y]] <= age_max
+          )
+      })
+
       output$plot <- renderPlot({
-        req(plot_data(), selections$plot_type(), selections$value_col(), selections$selected_age())
+        req(selections$plot_type(), selections$selected_age())
+
+        if (selections$plot_type() == "crossplot") {
+          d <- crossplot_data()
+          validate(need(
+            nrow(d) > 0,
+            "No data points fall within the selected age range for both models."
+          ))
+          cv <- if (is.null(selections$crossplot_colour())) {
+            "none"
+          } else {
+            selections$crossplot_colour()
+          }
+          return(plot_d13c_crossplot(
+            plot_data  = d,
+            x_col      = selections$model_x(),
+            y_col      = selections$model_y(),
+            colour_var = cv
+          ))
+        }
+
+        req(plot_data(), selections$value_col())
         age_min <- min(selections$selected_age())
         age_max <- max(selections$selected_age())
 

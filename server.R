@@ -17,7 +17,21 @@ function(input, output, session){
   download_plot_d13c <- download_plot_server(
     id = "download_plot_d13c"
   )
-  
+
+  selected_options_d13c_crossplot <- select_options_d13c_crossplot_server(
+    id = "select_options_d13c_crossplot"
+  )
+
+  plot_d13c_crossplot_server(
+    id         = "plot_d13c_crossplot",
+    indata     = indata_d13c, # from global.R
+    selections = selected_options_d13c_crossplot
+  )
+
+  download_plot_d13c_crossplot <- download_plot_server(
+    id = "download_plot_d13c_crossplot"
+  )
+
   plot_gpts_age_server(
     id = "plot_gpts_age",
     data_gpts_plot, # from global.R
@@ -42,5 +56,13 @@ function(input, output, session){
   download_plot_upload <- download_plot_server(
     id = "download_plot_upload"
   )
+
+  output$upload_example_panel <- renderUI({
+    if (isTRUE(selected_options_upload$has_uploaded())) {
+      NULL
+    } else {
+      upload_example_ui()
+    }
+  })
 
 }

@@ -116,6 +116,64 @@ test_that("background_data is NULL when the chosen model is not in model_cols", 
   )
 })
 
+test_that("crossplot_data filters to non-NA in both selected models and within age range", {
+  set.seed(10)
+  raw <- synth_upload_raw(n_rows = 20)
+  raw$Model_A[1:3] <- NA
+  shiny::testServer(
+    app  = plot_upload_age_server,
+    args = list(selections = make_upload_selections(
+      raw_data     = function() raw,
+      plot_type    = function() "crossplot",
+      selected_age = function() c(8, 18)
+    )),
+    expr = {
+      d <- crossplot_data()
+      expect_false(any(is.na(d$Model_A)))
+      expect_false(any(is.na(d$Model_B)))
+      expect_true(all(d$Model_A >= 8 & d$Model_A <= 18))
+      expect_true(all(d$Model_B >= 8 & d$Model_B <= 18))
+    }
+  )
+})
+
+test_that("crossplot_data coerces character model and colour columns to numeric", {
+  set.seed(11)
+  raw <- synth_upload_raw(n_rows = 12)
+  raw$Model_A <- as.character(raw$Model_A)
+  raw$value   <- as.character(raw$value)
+  shiny::testServer(
+    app  = plot_upload_age_server,
+    args = list(selections = make_upload_selections(
+      raw_data     = function() raw,
+      plot_type    = function() "crossplot",
+      selected_age = function() c(0, 50)
+    )),
+    expr = {
+      d <- crossplot_data()
+      expect_true(is.numeric(d$Model_A))
+      expect_true(is.numeric(d$Model_B))
+      expect_true(is.numeric(d$value))
+    }
+  )
+})
+
+test_that("crossplot_data validates that the selected model columns exist", {
+  set.seed(12)
+  raw <- synth_upload_raw(n_rows = 8)
+  shiny::testServer(
+    app  = plot_upload_age_server,
+    args = list(selections = make_upload_selections(
+      raw_data  = function() raw,
+      plot_type = function() "crossplot",
+      model_x   = function() "Model_DOES_NOT_EXIST"
+    )),
+    expr = {
+      expect_error(crossplot_data(), "Model_DOES_NOT_EXIST")
+    }
+  )
+})
+
 test_that("magnetostrat_data prepares long-form data when magnetostrat columns are present", {
   set.seed(9)
   raw     <- synth_magnetostrat_wide(n_boundaries = 5, n_models = 2)

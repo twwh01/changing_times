@@ -1,11 +1,6 @@
 # Module UI for the About page.
 page_about_ui <- function(id) {
   div(
-    h2(
-      "About",
-      align = "left"
-    ),
-    
     h4("What is ", em("Changing Times"), "?"),
     p(em("Changing Times"), " is an interactive tool for understanding, quantifying, and visualising the
       differences between stratigraphic age models.
@@ -34,6 +29,26 @@ page_about_ui <- function(id) {
       " developed the Shiny app and R code. Claude Code was used to refactor and write tests for the app.
       Fred Bowyer developed the Ediacaran-Cambrian stratigraphic age models (see Bowyer ", em("et al."), " 2023; 2024).
       Anna Joy Drury provided the Miocene geomagnetic polarity timescale data and age models."),
+
+    h4("What data format does ", em("Changing Times"), " need?"),
+    p("Uploaded files must be ", strong(".xlsx"), " or ", strong(".csv"),
+      " with one row per datum (e.g. an isotope sample, a fossil first/last appearance,
+      or a magnetochron boundary). Required columns:"),
+    tags$ul(
+      tags$li(strong("One or more age-model columns"), " whose names start with ",
+        code("Model_"), " (e.g. ", code("Model_CK1995"), ", ", code("Model_GTS2020"), ").
+        Each column gives the age in Ma for that datum under that age model. Values must be numeric.
+        Leave the cell blank (or use ", code("NA"), ") if a datum is not represented in a given age model."),
+      tags$li(strong("At least one additional column"), " to plot — numeric for the isotope plot
+        (e.g. δ", tags$sup("13"), "C, δ", tags$sup("18"), "O), or any column for the isochron plot.")
+    ),
+    p("For magnetostratigraphy-style data, also include two text columns named ",
+      code("Magnetochron_base"), " and ", code("Magnetochron_top"), ". ", code("Magnetochron_base"), 
+      " is the younger chron, the one with its base at this age; ", code("Magnetochron_top"), " is the 
+      older chron, the one with its top at this age. Polarity is inferred from chron names ending in ",
+      code("n"), " (normal) or ", code("r"), " (reversed)."),
+    p("Rows with missing model ages are dropped from that model only; i.e. a datum can appear
+      in some age models and not others."),
 
     h4("What's coming next?"),
     p(em("Changing Times"), " is still in development and this should be regarded as a beta release.

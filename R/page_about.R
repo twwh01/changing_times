@@ -18,7 +18,8 @@ page_about_ui <- function(id) {
     p("When working with temporal data it is important to make sure you are measuring datasets in the same temporal reference frame.
       However, age models change over time as new data and methods become available.
       Both acknowledged and unknown uncertainties associated with age models can be large, especially when working
-      with deep time data, and can significantly affect dataset interpretations (e.g. Westerhold ", em("et al."), " 2024). ",
+      with deep time data, and can significantly affect dataset interpretations (e.g. ",
+      tags$a(href = "#ref-westerhold-2024", "Westerhold ", em("et al."), " 2024"), "). ",
       em("Changing Times"), " helps to visualise and quantify the changes between different age model iterations, showing which
       time intervals have been most affected from one version to another.
       Overall, this can help show how stable age models are, and which time intervals may be subject to reinterpretation as
@@ -28,7 +29,9 @@ page_about_ui <- function(id) {
     p(tags$a("Thomas Wong Hearing", href = "https://twwh01.github.io", target = "_blank", rel = "noopener noreferrer"),
       " developed the Shiny app and R code. Claude Code was used to refactor and write tests for the app. ", 
       tags$a("Fred Bowyer", href = "https://scholar.google.com/citations?user=KIbkpyUAAAAJ&hl=en", target = "_blank", rel = "noopener noreferrer"),
-      "developed the Ediacaran-Cambrian stratigraphic age models (see Bowyer ", em("et al."), " 2023; 2024). ",
+      "developed the Ediacaran-Cambrian stratigraphic age models (see ",
+      tags$a(href = "#ref-bowyer-2023", "Bowyer ", em("et al."), " 2023"), "; ",
+      tags$a(href = "#ref-bowyer-2024", "2024"), "). ",
       tags$a("Anna Joy Drury", href = "https://scholar.google.com/citations?user=tA5DrfoAAAAJ&hl=en", target = "_blank", rel = "noopener noreferrer"),
       " provided the Miocene geomagnetic polarity timescale data and age models."),
 
@@ -62,6 +65,7 @@ page_about_ui <- function(id) {
     tags$ul(
 
       tags$li(
+        id = "ref-bowyer-2023",
         "Bowyer, F.T., Uahengo, C.-I., et al. 2023.
         Constraining the onset and environmental setting of metazoan biomineralization: The Ediacaran Nama Group of the Tsaus Mountains, Namibia.
         Earth and Planetary Science Letters, 620, 118336, ",
@@ -70,6 +74,7 @@ page_about_ui <- function(id) {
       ),
 
       tags$li(
+        id = "ref-bowyer-2024",
         "Bowyer, F.T., Wood, R.A. and Yilales, M. 2024.
         Sea level controls on Ediacaran-Cambrian animal radiations.
         Science Advances, 10, eado6462, ",
@@ -78,6 +83,7 @@ page_about_ui <- function(id) {
       ),
 
       tags$li(
+        id = "ref-westerhold-2024",
         "Westerhold, T., Agnini, C., et al. 2024.
         Timing Is Everything.
         Paleoceanography and Paleoclimatology, 39, e2024PA004932, ",

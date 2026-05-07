@@ -94,11 +94,17 @@ plot_isotope_upload <- function(
         geom_point(aes(colour = selected_model_volatility), shape = 21)
       )
     } else if (point_colour %in% names(plot_data)) {
-      # Any other string that matches a column name: treat as categorical colouring.
-      list(
-        scale_colour_viridis_d(name = point_colour, option = "turbo"),
-        geom_point(aes(colour = .data[[point_colour]]), shape = 21)
-      )
+      if (is.numeric(plot_data[[point_colour]])) {
+        list(
+          scale_colour_viridis_c(name = point_colour, option = "plasma"),
+          geom_point(aes(colour = .data[[point_colour]]), shape = 21)
+        )
+      } else {
+        list(
+          scale_colour_viridis_d(name = point_colour, option = "turbo"),
+          geom_point(aes(colour = .data[[point_colour]]), shape = 21)
+        )
+      }
     }
   }
 

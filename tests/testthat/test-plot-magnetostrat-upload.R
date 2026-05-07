@@ -61,6 +61,21 @@ test_that("plot_magnetostrat_upload renders with selected-model volatility colou
   expect_builds(p)
 })
 
+test_that("plot_magnetostrat_upload falls back to grey segments when colour names a column", {
+  set.seed(5)
+  pd <- build_magnetostrat_plot_data(synth_magnetostrat_wide())
+  # Even when an arbitrary column name is passed (which prepare_magnetostrat_data
+  # does not propagate), the plot should still render with grey segments.
+  p <- plot_magnetostrat_upload(
+    plot_data          = pd,
+    age_max_lim        = 25,
+    age_min_lim        = 0,
+    volatility_colours = "some_user_column"
+  )
+  expect_s3_class(p, "ggplot")
+  expect_builds(p)
+})
+
 test_that("plot_magnetostrat_upload returns a patchwork composition when show_labels = TRUE", {
   set.seed(4)
   pd <- build_magnetostrat_plot_data(synth_magnetostrat_wide())

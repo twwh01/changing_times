@@ -55,6 +55,21 @@ test_that("plot_isotope_upload renders with a categorical column for point colou
   expect_builds(p)
 })
 
+test_that("plot_isotope_upload renders with a numeric column for point colour", {
+  set.seed(7)
+  d <- synth_isotope_data()
+  d$weight <- stats::runif(nrow(d), 0, 10)
+  p <- plot_isotope_upload(
+    plot_data    = d,
+    value_col    = "value",
+    age_max_lim  = 650,
+    age_min_lim  = 450,
+    point_colour = "weight"
+  )
+  expect_s3_class(p, "ggplot")
+  expect_builds(p)
+})
+
 test_that("plot_isotope_upload renders with rolling mean overlay", {
   set.seed(5)
   d <- synth_isotope_data() %>%

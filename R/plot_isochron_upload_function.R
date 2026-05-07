@@ -46,6 +46,20 @@ plot_isochron_upload <- function(
         option = "viridis"
       )
     )
+  } else if (volatility_colours %in% names(plot_data)) {
+    if (is.numeric(plot_data[[volatility_colours]])) {
+      list(
+        geom_line(aes(colour = .data[[volatility_colours]]), linewidth = 1),
+        scale_colour_viridis_c(name = volatility_colours, option = "viridis")
+      )
+    } else {
+      list(
+        geom_line(aes(colour = .data[[volatility_colours]]), linewidth = 1),
+        scale_colour_viridis_d(name = volatility_colours, option = "turbo")
+      )
+    }
+  } else {
+    geom_line(colour = "grey50", linewidth = 1)
   }
 
   p <- p + line_layer

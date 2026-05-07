@@ -158,17 +158,21 @@ select_options_upload_server <- function(id) {
 
       output$colour_ui <- renderUI({
         req(input$plot_type)
+        df <- raw_data()
+        extra_cols <- setdiff(names(df), model_cols())
         if (input$plot_type == "isotope") {
           bg_choices <- c("none", model_cols())
+          point_colour_choices <- c(
+            "none",
+            "all-model age volatility",
+            "selected model age volatility",
+            extra_cols
+          )
           tagList(
             selectInput(
               inputId = ns("point_colours"),
               label   = "Point colour variable:",
-              choices = c(
-                "none",
-                "all-model age volatility",
-                "selected model age volatility"
-              ),
+              choices = point_colour_choices,
               selected = "none"
             ),
             selectInput(
@@ -207,15 +211,17 @@ select_options_upload_server <- function(id) {
             selected = default
           )
         } else {
+          volatility_colour_choices <- c(
+            "none",
+            "all-model age volatility",
+            "selected model age volatility",
+            extra_cols
+          )
           iso_controls <- list(
             selectInput(
               inputId = ns("volatility_colours"),
               label   = "Line colour variable:",
-              choices = c(
-                "none",
-                "all-model age volatility",
-                "selected model age volatility"
-              ),
+              choices = volatility_colour_choices,
               selected = "all-model age volatility"
             )
           )

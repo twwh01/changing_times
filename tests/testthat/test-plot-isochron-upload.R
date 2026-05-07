@@ -40,3 +40,33 @@ test_that("plot_isochron_upload renders with a categorical value column", {
   expect_s3_class(p, "ggplot")
   expect_builds(p)
 })
+
+test_that("plot_isochron_upload renders when volatility_colours names a numeric column", {
+  set.seed(4)
+  d <- synth_isotope_data()
+  d$weight <- stats::runif(nrow(d), 0, 10)
+  p <- plot_isochron_upload(
+    plot_data          = d,
+    value_col          = "value",
+    age_max_lim        = 650,
+    age_min_lim        = 450,
+    volatility_colours = "weight"
+  )
+  expect_s3_class(p, "ggplot")
+  expect_builds(p)
+})
+
+test_that("plot_isochron_upload renders when volatility_colours names a categorical column", {
+  set.seed(5)
+  d <- synth_isotope_data()
+  d$category <- sample(c("A", "B", "C"), nrow(d), replace = TRUE)
+  p <- plot_isochron_upload(
+    plot_data          = d,
+    value_col          = "(none)",
+    age_max_lim        = 650,
+    age_min_lim        = 450,
+    volatility_colours = "category"
+  )
+  expect_s3_class(p, "ggplot")
+  expect_builds(p)
+})

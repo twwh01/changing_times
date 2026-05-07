@@ -72,6 +72,16 @@ plot_magnetostrat_upload <- function(
     ) +
     deeptime::coord_geo(pos = "left", dat = "stages")
 
+  # Magnetostrat data does not carry arbitrary columns through
+  # prepare_magnetostrat_data(), so for any colour option that isn't one of
+  # the known volatility variables, draw plain grey segments.
+  known_volatility_options <- c(
+    "none", "all-model age volatility", "selected model age volatility"
+  )
+  if (!volatility_colours %in% known_volatility_options) {
+    volatility_colours <- "none"
+  }
+
   line_layer <- if (volatility_colours == "none") {
     geom_segment(
       data = seg_data,

@@ -9,7 +9,7 @@ page_about_ui <- function(id) {
       This beta release of ", em("Changing Times"), " is still in development and may change without notice until
       a first major version is released. "),
     p(em("Changing Times"), " has two built-in datasets: one for Ediacaran-Cambrian carbon isotope chronostratigraphy
-      developed by Fred Bowyer, and one for the Miocene geomagnetic polarity timescale provided by Anna Joy Drury.
+      developed by Fred Bowyer, and one for the Miocene geomagnetic polarity timescale developed by Anna Joy Drury.
       The app is designed to be flexible and adaptable to other types of data and age models.
       If you find that your data do not work in the way you expect, please ",
       tags$a("contact me", href = "mailto:twonghearing@gmail.com"), "."),
@@ -26,9 +26,11 @@ page_about_ui <- function(id) {
 
     h4("Who's behind", em("Changing Times"), "?"),
     p(tags$a("Thomas Wong Hearing", href = "https://twwh01.github.io", target = "_blank", rel = "noopener noreferrer"),
-      " developed the Shiny app and R code. Claude Code was used to refactor and write tests for the app.
-      Fred Bowyer developed the Ediacaran-Cambrian stratigraphic age models (see Bowyer ", em("et al."), " 2023; 2024).
-      Anna Joy Drury provided the Miocene geomagnetic polarity timescale data and age models."),
+      " developed the Shiny app and R code. Claude Code was used to refactor and write tests for the app. ", 
+      tags$a("Fred Bowyer", href = "https://scholar.google.com/citations?user=KIbkpyUAAAAJ&hl=en", target = "_blank", rel = "noopener noreferrer"),
+      "developed the Ediacaran-Cambrian stratigraphic age models (see Bowyer ", em("et al."), " 2023; 2024). ",
+      tags$a("Anna Joy Drury", href = "https://scholar.google.com/citations?user=tA5DrfoAAAAJ&hl=en", target = "_blank", rel = "noopener noreferrer"),
+      " provided the Miocene geomagnetic polarity timescale data and age models."),
 
     h4("What data format does ", em("Changing Times"), " need?"),
     p("Uploaded files must be ", strong(".xlsx"), " or ", strong(".csv"),

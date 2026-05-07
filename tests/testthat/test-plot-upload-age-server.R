@@ -58,6 +58,38 @@ test_that("plot_data omits data_roll for the isochron plot type", {
   )
 })
 
+test_that("plot_data_full attaches originating_model based on chronological model order", {
+  set.seed(20)
+  raw <- data.frame(
+    Model_GTS2020 = c(10.0, 11.0, NA),
+    Model_CK1995  = c(9.5,  NA,   12.0),
+    value         = c(1, 2, 3),
+    stringsAsFactors = FALSE
+  )
+  shiny::testServer(
+    app  = plot_upload_age_server,
+    args = list(selections = make_upload_selections(
+      raw_data   = function() raw,
+      model_cols = function() c("Model_GTS2020", "Model_CK1995"),
+      age_models = function() c("Model_GTS2020", "Model_CK1995")
+    )),
+    expr = {
+      d <- plot_data_full()
+      expect_true("originating_model" %in% names(d))
+      # Row 1: both models non-NA, CK1995 is older -> originator.
+      # Row 2: only GTS2020 is non-NA -> originator GTS2020.
+      # Row 3: only CK1995 is non-NA -> originator CK1995.
+      per_datum <- d %>%
+        dplyr::distinct(datum_id, originating_model) %>%
+        dplyr::arrange(datum_id)
+      expect_equal(
+        as.character(per_datum$originating_model),
+        c("Model_CK1995", "Model_GTS2020", "Model_CK1995")
+      )
+    }
+  )
+})
+
 test_that("plot_data attaches selected_model_volatility under that colour option", {
   set.seed(5)
   shiny::testServer(

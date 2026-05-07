@@ -16,6 +16,10 @@ synth_isotope_data <- function(n_points = 20, n_models = 2) {
   grid$total_volatility          <- stats::runif(nrow(grid), 0.1, 5)
   grid$selected_model_volatility <- stats::runif(nrow(grid), 0.1, 5)
   grid$age_model_label           <- forcats::fct_inorder(grid$age_model)
+  grid$originating_model         <- factor(
+    sample(models, nrow(grid), replace = TRUE),
+    levels = models
+  )
   grid
 }
 

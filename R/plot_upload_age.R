@@ -17,10 +17,26 @@ plot_upload_age_server <- function(id, selections) {
         m_cols <- selections$model_cols()
         v_col  <- selections$value_col()
 
-        d <- selections$raw_data() %>%
+        raw <- selections$raw_data()
+        # Originating age model: per row, pick the chronologically earliest
+        # model column that has a non-NA value. "Earliest" comes from a
+        # 4-digit year embedded in the column name (e.g. Model_CK1995 -> 1995)
+        # if present, else from alphabetical order of the column name
+        # (e.g. Model_A before Model_B).
+        m_cols_chron <- m_cols[order_age_models(m_cols)]
+        na_mat <- is.na(raw[m_cols_chron])
+        all_na <- rowSums(na_mat) == length(m_cols_chron)
+        first_idx <- max.col(!na_mat, ties.method = "first")
+        originating <- factor(
+          ifelse(all_na, NA_character_, m_cols_chron[first_idx]),
+          levels = m_cols_chron
+        )
+
+        d <- raw %>%
           dplyr::mutate(
-            datum_id = seq_len(dplyr::n()),
-            .before  = 1
+            datum_id          = seq_len(dplyr::n()),
+            originating_model = originating,
+            .before           = 1
           ) %>%
           dplyr::rowwise() %>%
           dplyr::mutate(

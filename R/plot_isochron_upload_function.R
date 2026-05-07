@@ -46,6 +46,16 @@ plot_isochron_upload <- function(
         option = "viridis"
       )
     )
+  } else if (volatility_colours == "originating age model") {
+    list(
+      geom_line(aes(colour = originating_model), linewidth = 1),
+      scale_colour_viridis_d(
+        name   = "originating\nage model",
+        option = "turbo",
+        drop   = FALSE,
+        na.translate = FALSE
+      )
+    )
   } else if (volatility_colours %in% names(plot_data)) {
     if (is.numeric(plot_data[[volatility_colours]])) {
       list(

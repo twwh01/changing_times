@@ -41,6 +41,24 @@ test_that("plot_isochron_upload renders with a categorical value column", {
   expect_builds(p)
 })
 
+test_that("plot_isochron_upload renders with originating age model colouring", {
+  set.seed(6)
+  d <- synth_isotope_data()
+  d$originating_model <- factor(
+    sample(c("Model_A", "Model_B"), nrow(d), replace = TRUE),
+    levels = c("Model_A", "Model_B")
+  )
+  p <- plot_isochron_upload(
+    plot_data          = d,
+    value_col          = "value",
+    age_max_lim        = 650,
+    age_min_lim        = 450,
+    volatility_colours = "originating age model"
+  )
+  expect_s3_class(p, "ggplot")
+  expect_builds(p)
+})
+
 test_that("plot_isochron_upload renders when volatility_colours names a numeric column", {
   set.seed(4)
   d <- synth_isotope_data()

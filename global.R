@@ -19,6 +19,7 @@ library(scales) # for log-transforming colour scales
 
 # load helpers needed during startup (R/ is auto-sourced by Shiny *after* global.R) ----
 source(file.path("R", "prepare_magnetostrat_data.R"))
+source(file.path("R", "order_age_models.R"))
 
 
 # define custom themes and scales ----
@@ -64,7 +65,22 @@ indata_d13c <- indata %>%
   dplyr::rowwise() %>%
   dplyr::mutate(
     total_volatility = sd(dplyr::c_across(dplyr::starts_with("Model")), na.rm = TRUE)
+  ) %>%
+  dplyr::ungroup()
+
+# Originating age model: per row, pick the chronologically earliest Model_*
+# column that has a non-NA value (4-digit year if present, else alphabetical).
+{
+  d13c_model_cols  <- grep("^Model", names(indata_d13c), value = TRUE)
+  d13c_chron_order <- d13c_model_cols[order_age_models(d13c_model_cols)]
+  d13c_na_mat      <- is.na(indata_d13c[d13c_chron_order])
+  d13c_all_na      <- rowSums(d13c_na_mat) == length(d13c_chron_order)
+  d13c_first_idx   <- max.col(!d13c_na_mat, ties.method = "first")
+  indata_d13c$originating_model <- factor(
+    ifelse(d13c_all_na, NA_character_, d13c_chron_order[d13c_first_idx]),
+    levels = d13c_chron_order
   )
+}
 
 data_13c_plot <- indata_d13c %>%
   tidyr::pivot_longer(

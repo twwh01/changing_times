@@ -55,6 +55,24 @@ test_that("plot_isotope_upload renders with a categorical column for point colou
   expect_builds(p)
 })
 
+test_that("plot_isotope_upload renders with originating age model colouring", {
+  set.seed(8)
+  d <- synth_isotope_data()
+  d$originating_model <- factor(
+    sample(c("Model_A", "Model_B"), nrow(d), replace = TRUE),
+    levels = c("Model_A", "Model_B")
+  )
+  p <- plot_isotope_upload(
+    plot_data    = d,
+    value_col    = "value",
+    age_max_lim  = 650,
+    age_min_lim  = 450,
+    point_colour = "originating age model"
+  )
+  expect_s3_class(p, "ggplot")
+  expect_builds(p)
+})
+
 test_that("plot_isotope_upload renders with a numeric column for point colour", {
   set.seed(7)
   d <- synth_isotope_data()

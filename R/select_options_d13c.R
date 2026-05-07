@@ -29,12 +29,13 @@ select_options_d13c_ui <- function(id) {
     
     selectInput(
       inputId = ns("point_colours"),
-      label = "Select which variable\nto use for point colour:", 
+      label = "Select which variable\nto use for point colour:",
       choices = c(
-        "none", 
-        "region", 
+        "none",
+        "region",
         "all-model age volatility",
-        "selected model age volatility"
+        "selected model age volatility",
+        "originating age model"
       ),
       selected = "none"
     ),

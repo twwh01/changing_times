@@ -93,6 +93,16 @@ plot_isotope_upload <- function(
         ),
         geom_point(aes(colour = selected_model_volatility), shape = 21)
       )
+    } else if (point_colour == "originating age model") {
+      list(
+        scale_colour_viridis_d(
+          name   = "originating\nage model",
+          option = "turbo",
+          drop   = FALSE,
+          na.translate = FALSE
+        ),
+        geom_point(aes(colour = originating_model), shape = 21)
+      )
     } else if (point_colour %in% names(plot_data)) {
       if (is.numeric(plot_data[[point_colour]])) {
         list(

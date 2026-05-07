@@ -166,6 +166,7 @@ select_options_upload_server <- function(id) {
             "none",
             "all-model age volatility",
             "selected model age volatility",
+            "originating age model",
             extra_cols
           )
           tagList(
@@ -215,6 +216,7 @@ select_options_upload_server <- function(id) {
             "none",
             "all-model age volatility",
             "selected model age volatility",
+            "originating age model",
             extra_cols
           )
           iso_controls <- list(
